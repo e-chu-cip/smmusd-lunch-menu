@@ -110,6 +110,8 @@ function normalizeOcr_(text) {
   return s.trim();
 }
 
+Logger.log("Target Monday for this send: " + getNextMonday_(new Date()));
+
 /** Normalize HTML pulled from menu pages */
 function normalizeHtmlForLinks_(html) {
   if (!html) return "";
@@ -542,4 +544,67 @@ function debugOcrSample_LunchOnly() {
   Logger.log("=== LUNCH OCR SAMPLE (first 2000 chars) ===");
   Logger.log((lunchText || "").substring(0, 2000));
   Logger.log("=== LUNCH OCR SAMPLE END ===");
+}
+
+/**
+ * Returns a Date object representing the next Monday relative to "now".
+ * - If today is Monday, "next Monday" means the Monday of the following week.
+ */
+function getNextMonday_(fromDate) {
+  var d = fromDate ? new Date(fromDate) : new Date();
+  d.setHours(0, 0, 0, 0);
+
+  var day = d.getDay(); // Sun=0, Mon=1, ..., Sat=6
+  var delta = (8 - day) % 7;
+  if (delta === 0) delta = 7; // if already Monday, go to next week's Monday
+  d.setDate(d.getDate() + delta);
+
+  return d;
+}
+
+/**
+ * Returns true if today is exactly 2 days before the next Monday.
+ * (i.e., typically Saturday).
+ */
+function isTwoDaysBeforeNextMonday_() {
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  var nextMonday = getNextMonday_(today);
+
+  var twoDaysBefore = new Date(nextMonday);
+  twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
+
+  return today.getTime() === twoDaysBefore.getTime();
+}
+/**
+ * Returns a Date object representing the next Monday relative to "now".
+ * - If today is Monday, "next Monday" means the Monday of the following week.
+ */
+function getNextMonday_(fromDate) {
+  var d = fromDate ? new Date(fromDate) : new Date();
+  d.setHours(0, 0, 0, 0);
+
+  var day = d.getDay(); // Sun=0, Mon=1, ..., Sat=6
+  var delta = (8 - day) % 7;
+  if (delta === 0) delta = 7; // if already Monday, go to next week's Monday
+  d.setDate(d.getDate() + delta);
+
+  return d;
+}
+
+/**
+ * Returns true if today is exactly 2 days before the next Monday.
+ * (i.e., typically Saturday).
+ */
+function isTwoDaysBeforeNextMonday_() {
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  var nextMonday = getNextMonday_(today);
+
+  var twoDaysBefore = new Date(nextMonday);
+  twoDaysBefore.setDate(twoDaysBefore.getDate() - 2);
+
+  return today.getTime() === twoDaysBefore.getTime();
 }
