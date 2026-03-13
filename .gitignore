@@ -1,0 +1,6 @@
+# clasp metadata (contains scriptId)
+.clasp.json
+
+# OS / editor
+.DS_Store
+.vscode/
